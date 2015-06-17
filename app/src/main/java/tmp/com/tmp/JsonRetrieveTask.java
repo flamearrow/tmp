@@ -21,8 +21,6 @@ public abstract class JsonRetrieveTask extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... args) {
         StringBuilder result = new StringBuilder();
         try {
-            // open the connection
-
             final URL url = new URL(mUrl);
             final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
