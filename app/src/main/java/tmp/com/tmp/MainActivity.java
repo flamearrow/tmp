@@ -1,10 +1,15 @@
 package tmp.com.tmp;
 
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -27,6 +32,8 @@ public class MainActivity extends ListActivity {
                     mIssueAdapter.notifyDataSetChanged();
                 }
             });
+            setListAdapter(mIssueAdapter);
+            getListView().setOnItemClickListener(new IssueClickListener());
         }
     }
 
@@ -34,6 +41,48 @@ public class MainActivity extends ListActivity {
         mIssues = new ArrayList<>();
         mIssueAdapter = new IssueAdapter();
     }
+
+    class IssueClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final Dialog dialog = new Dialog(MainActivity.this);
+            dialog.setContentView(R.layout.comments_dialogue);
+            dialog.setTitle("Comments");
+            final TextView tx = (TextView) dialog.findViewById(R.id.comments);
+            tx.setMovementMethod(new ScrollingMovementMethod());
+            CommentManager.retrieveComments(mIssues.get(position),
+                    new CommentManager.ResultListener() {
+                        @Override
+                        public void onCommentsResult(ArrayList<Comment> comments) {
+                            tx.setText(buildComments(comments));
+                        }
+                    });
+            final Button button = (Button) dialog.findViewById(R.id.ok_button);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+
+        private String buildComments(ArrayList<Comment> comments) {
+            if (comments.size() == 0) {
+                return "No comments!";
+            }
+            StringBuilder sb = new StringBuilder();
+            for (Comment comment : comments) {
+                sb.append(comment.getName());
+                sb.append(" : ");
+                sb.append(comment.getBody());
+                sb.append("\n\n");
+            }
+            return sb.toString();
+        }
+    }
+
 
     class IssueAdapter extends BaseAdapter {
 
@@ -56,8 +105,11 @@ public class MainActivity extends ListActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.list_item, null);
-
             }
+            TextView title = (TextView) convertView.findViewById(R.id.title);
+            TextView body = (TextView) convertView.findViewById(R.id.body);
+            title.setText(mIssues.get(position).getTitle());
+            body.setText(mIssues.get(position).getBody());
             return convertView;
         }
     }
