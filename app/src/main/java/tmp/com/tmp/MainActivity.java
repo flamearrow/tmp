@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends ListActivity {
 
@@ -28,6 +29,7 @@ public class MainActivity extends ListActivity {
             IssueManager.retrieveIssues(new IssueManager.ResultListener() {
                 @Override
                 public void onIssueResult(ArrayList<Issue> issues) {
+                    Collections.sort(issues);
                     mIssues.addAll(issues);
                     mIssueAdapter.notifyDataSetChanged();
                 }
