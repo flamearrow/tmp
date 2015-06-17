@@ -41,8 +41,6 @@ public class IssueManager {
         protected ArrayList<Issue> doInBackground(Void... args) {
             ArrayList<Issue> result = new ArrayList<>();
 
-            Calendar updated = Calendar.getInstance();
-
             try {
                 URL url = new URL(ISSUE_URL);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();

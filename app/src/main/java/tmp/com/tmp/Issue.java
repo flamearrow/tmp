@@ -6,13 +6,13 @@ public class Issue {
     private Calendar mUpdated;
     private String mTitle;
     private String mBody;
-    private String mUrl;
+    private String mCommentsUrl;
 
-    public Issue(Calendar updated, String title, String body, String url) {
+    public Issue(Calendar updated, String title, String body, String commentsUrl) {
         mUpdated = updated;
         mTitle = title;
         mBody = body;
-        mUrl = url;
+        mCommentsUrl = commentsUrl;
     }
 
     public Calendar getUpdated() {
@@ -39,11 +39,11 @@ public class Issue {
         mBody = body;
     }
 
-    public String getUrl() {
-        return mUrl;
+    public String getCommentsUrl() {
+        return mCommentsUrl;
     }
 
-    public void setUrl(String url) {
-        mUrl = url;
+    public void setCommentsUrl(String commentsUrl) {
+        mCommentsUrl = commentsUrl;
     }
 }
