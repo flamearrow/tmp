@@ -1,5 +1,7 @@
 package tmp.com.tmp;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +14,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class IssueManager {
+    private static final String TAG = "IssueManager";
     private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
 
     public static void retrieveIssues(final ResultListener resultListener) {
@@ -23,6 +26,7 @@ public class IssueManager {
                 try {
                     parseIssues(result, issues);
                 } catch (JSONException|ParseException ignore) {
+                    Log.w(TAG, "Unable to parse issue");
                 }
                 resultListener.onIssueResult(issues);
             }
@@ -37,21 +41,7 @@ public class IssueManager {
         final JSONArray array = new JSONArray(rawJson);
         final int arrayLength = array.length();
         for (int arrayIndex = 0; arrayIndex < arrayLength; arrayIndex++) {
-            final JSONObject object = array.getJSONObject(arrayIndex);
-
-            // java does not handle ISO 8601 properly, so replace Z if necessary
-            final String updatedAtString = object.getString("updated_at").replaceAll("Z$", "+0000");
-            final Date updatedAtDate = DATE_FORMAT.parse(updatedAtString);
-            final Calendar updatedAt = Calendar.getInstance();
-            updatedAt.setTime(updatedAtDate);
-
-            final String title = object.getString("title");
-
-            final String body = object.getString("body");
-
-            final String url = object.getString("comments_url");
-
-            issues.add(new Issue(updatedAt, title, body, url));
+            issues.add(parseIssue(array.getJSONObject(arrayIndex)));
         }
     }
 
