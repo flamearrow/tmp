@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,28 +21,39 @@ public class MainActivity extends ListActivity {
 
     private IssueAdapter mIssueAdapter;
 
+    private static final String ISSUES_KEY = "ISSUES_KEY";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (mIssues == null) {
-            initializeIssueAdapter();
-            IssueManager.retrieveIssues(new IssueManager.ResultListener() {
-                @Override
-                public void onIssueResult(ArrayList<Issue> issues) {
-                    Collections.sort(issues);
-                    mIssues.addAll(issues);
-                    mIssueAdapter.notifyDataSetChanged();
-                }
-            });
-            setListAdapter(mIssueAdapter);
-            getListView().setOnItemClickListener(new IssueClickListener());
+            if (savedInstanceState != null && savedInstanceState.containsKey(ISSUES_KEY)) {
+                mIssues = savedInstanceState.getParcelableArrayList(ISSUES_KEY);
+            } else {
+                mIssues = new ArrayList<>();
+                IssueManager.retrieveIssues(new IssueManager.ResultListener() {
+                    @Override
+                    public void onIssueResult(ArrayList<Issue> issues) {
+                        Collections.sort(issues);
+                        mIssues.addAll(issues);
+                        mIssueAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+            mIssueAdapter = new IssueAdapter();
+
         }
+        setListAdapter(mIssueAdapter);
+        getListView().setOnItemClickListener(new IssueClickListener());
     }
 
-    private void initializeIssueAdapter() {
-        mIssues = new ArrayList<>();
-        mIssueAdapter = new IssueAdapter();
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d("mlgb", "saving state");
+        outState.putParcelableArrayList(ISSUES_KEY, mIssues);
+        super.onSaveInstanceState(outState);
     }
 
     class IssueClickListener implements AdapterView.OnItemClickListener {
