@@ -19,10 +19,6 @@ public class Issue implements Comparable<Issue> {
         mCommentsUrl = commentsUrl;
     }
 
-    public Calendar getUpdated() {
-        return mUpdated;
-    }
-
     public String getTitle() {
         return mTitle;
     }

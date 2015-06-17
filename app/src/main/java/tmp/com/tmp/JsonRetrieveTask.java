@@ -1,6 +1,7 @@
 package tmp.com.tmp;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public abstract class JsonRetrieveTask extends AsyncTask<Void, Void, String> {
+    private static final String TAG = "JsonRetrieveTask";
+
     final String mUrl;
 
     public JsonRetrieveTask(String url) {
@@ -34,8 +37,11 @@ public abstract class JsonRetrieveTask extends AsyncTask<Void, Void, String> {
                 while ((line = bufferedReader.readLine()) != null) {
                     result.append(line);
                 }
+            } else {
+                logWarning();
             }
         } catch (IOException e) {
+            logWarning();
         }
         return result.toString();
     }
@@ -45,4 +51,8 @@ public abstract class JsonRetrieveTask extends AsyncTask<Void, Void, String> {
     }
 
     protected abstract void onJsonResult(String result);
+
+    private void logWarning() {
+        Log.w(TAG, "Unable to retrieve JSON");
+    }
 }

@@ -42,7 +42,8 @@ public class CommentManager {
 
     private static void parseComments(String rawJson, ArrayList<Comment> comments) throws JSONException {
         final JSONArray array = new JSONArray(rawJson);
-        for (int arrayIndex = 0; arrayIndex < array.length(); arrayIndex++) {
+        final int arrayLength = array.length();
+        for (int arrayIndex = 0; arrayIndex < arrayLength; arrayIndex++) {
             final JSONObject object = array.getJSONObject(arrayIndex);
 
             final String name = object.getJSONObject("user").getString("login");
