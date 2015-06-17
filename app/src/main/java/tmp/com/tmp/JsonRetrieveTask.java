@@ -8,13 +8,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class JsonRetrieveTask extends AsyncTask<Void, Void, String> {
+public abstract class JsonRetrieveTask extends AsyncTask<Void, Void, String> {
     final String mUrl;
-    final ResultListener mResultListener;
 
-    public JsonRetrieveTask(String url, ResultListener resultListener) {
+    public JsonRetrieveTask(String url) {
         mUrl = url;
-        mResultListener = resultListener;
     }
 
     protected String doInBackground(Void... args) {
@@ -43,10 +41,8 @@ public class JsonRetrieveTask extends AsyncTask<Void, Void, String> {
     }
 
     protected void onPostExecute(String result) {
-        mResultListener.onJsonResult(result);
+        onJsonResult(result);
     }
 
-    interface ResultListener {
-        void onJsonResult(String result);
-    }
+    protected abstract void onJsonResult(String result);
 }

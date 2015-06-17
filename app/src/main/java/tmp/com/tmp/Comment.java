@@ -4,9 +4,9 @@ public class Comment {
     private final String mName;
     private final String mBody;
 
-    public Comment(String body, String name) {
-        mBody = body;
+    public Comment(String name, String body) {
         mName = name;
+        mBody = body;
     }
 
     public String getBody() {
