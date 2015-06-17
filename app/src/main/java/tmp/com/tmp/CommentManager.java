@@ -10,16 +10,16 @@ import java.util.ArrayList;
 public class CommentManager {
     public static void retrieveComments(Issue issue, final ResultListener resultListener) {
         new JsonRetrieveTask(issue.getCommentsUrl(), new JsonRetrieveTask.ResultListener() {
-                    @Override
-                    public void onJsonResult(String result) {
-                        final ArrayList<Comment> comments = new ArrayList<>();
-                        try {
-                            parseComments(result, comments);
-                        } catch (JSONException |ParseException ignore) {
-                        }
-                        resultListener.onCommentsResult(comments);
-                    }
-                }).execute();
+            @Override
+            public void onJsonResult(String result) {
+                final ArrayList<Comment> comments = new ArrayList<>();
+                try {
+                    parseComments(result, comments);
+                } catch (JSONException |ParseException ignore) {
+                }
+                resultListener.onCommentsResult(comments);
+            }
+        }).execute();
     }
 
     private static void parseComments(String rawJson, ArrayList<Comment> comments) throws JSONException, ParseException {
