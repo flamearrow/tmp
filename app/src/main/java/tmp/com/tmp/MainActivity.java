@@ -74,8 +74,9 @@ public class MainActivity extends ListActivity {
             }
             StringBuilder sb = new StringBuilder();
             for (Comment comment : comments) {
+                sb.append("--------\n");
                 sb.append(comment.getName());
-                sb.append(" : ");
+                sb.append(" says:  ");
                 sb.append(comment.getBody());
                 sb.append("\n\n");
             }
