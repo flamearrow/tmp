@@ -1,12 +1,22 @@
 package tmp.com.tmp;
 
 public class Comment {
+
     private String mName;
+
     private String mBody;
 
     public Comment(String body, String name) {
         mBody = body;
         mName = name;
+    }
+
+    public String getBody() {
+        return mBody;
+    }
+
+    public void setBody(String body) {
+        mBody = body;
     }
 
     public String getName() {
@@ -16,4 +26,5 @@ public class Comment {
     public void setName(String name) {
         mName = name;
     }
+
 }
