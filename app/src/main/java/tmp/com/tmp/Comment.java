@@ -1,10 +1,8 @@
 package tmp.com.tmp;
 
 public class Comment {
-
-    private String mName;
-
-    private String mBody;
+    private final String mName;
+    private final String mBody;
 
     public Comment(String body, String name) {
         mBody = body;
@@ -15,16 +13,7 @@ public class Comment {
         return mBody;
     }
 
-    public void setBody(String body) {
-        mBody = body;
-    }
-
     public String getName() {
         return mName;
     }
-
-    public void setName(String name) {
-        mName = name;
-    }
-
 }
